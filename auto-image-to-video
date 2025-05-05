@@ -1,0 +1,21 @@
+from PIL import Image, ImageDraw, ImageFont
+from moviepy.editor import ImageSequenceClip
+import os
+
+# ফোল্ডার তৈরি করা
+if not os.path.exists("images"):
+    os.makedirs("images")
+
+# ইমেজ অটো তৈরি
+for i in range(5):
+    img = Image.new('RGB', (1280, 720), color=(73, 109, 137))
+    d = ImageDraw.Draw(img)
+    d.text((640, 360), f"Image {i+1}", fill=(255, 255, 0))
+    img.save(f'images/frame_{i}.png')
+
+# ইমেজ লিস্ট তৈরি
+image_files = [f'images/frame_{i}.png' for i in range(5)]
+
+# ভিডিও বানানো
+clip = ImageSequenceClip(image_files, fps=1)  # fps=1 মানে প্রতি সেকেন্ডে ১ ইমেজ
+clip.write_videofile("auto_generated_video.mp4", fps=1)
